@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,6 +17,7 @@ class Product
      * @ORM\Column(type="integer")
      */
     private $id;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -51,6 +53,19 @@ class Product
      * @ORM\Column(type="boolean")
      */
     private $isDelited;
+
+    /**
+     * @ORM\Column(type="guid")
+     */
+    private $uuid;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->isPublished = false;
+        $this->isDelited = false;
+    }
+
 
     public function getId(): ?int
     {
@@ -137,6 +152,18 @@ class Product
     public function setIsDelited(bool $isDelited): self
     {
         $this->isDelited = $isDelited;
+
+        return $this;
+    }
+
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
