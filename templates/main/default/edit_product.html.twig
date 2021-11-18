@@ -1,0 +1,32 @@
+{% extends 'main/base.html.twig' %}
+
+{% block page_description %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-2">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1>Edit</h1>
+                <p>
+                    {{ form_start(form) }}
+                  <span class="form-control">
+                      <i class="fa fa-calendar"></i>
+                      {{ form_label(form.title) }}
+                      {{ form_widget(form.title) }}
+
+                      <small>{{ form_help(form.title) }}</small>
+                      <span class="form-error">
+                          {{ form_errors(form.title) }}
+                      </span>
+                  </span>
+                    <input type="submit" value="Send">
+                    {{ form_end(form) }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
