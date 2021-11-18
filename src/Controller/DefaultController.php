@@ -19,7 +19,7 @@ class DefaultController extends AbstractController
     public function index(): Response
     {
         $products = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
-        dd($products);
+
         return $this->render('main/default/index.html.twig');
     }
 
