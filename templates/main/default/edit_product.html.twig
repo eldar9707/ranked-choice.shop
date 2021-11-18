@@ -11,7 +11,7 @@
                 <h1>Edit</h1>
                 <p>
                     {{ form_start(form) }}
-                  <span class="form-control">
+                  <div class="form-control">
                       <i class="fa fa-calendar"></i>
                       {{ form_label(form.title) }}
                       {{ form_widget(form.title) }}
@@ -20,8 +20,10 @@
                       <span class="form-error">
                           {{ form_errors(form.title) }}
                       </span>
-                  </span>
-                    <input type="submit" value="Send">
+                  </div>
+                {{ form_row(form.price) }}
+                {{ form_row(form.quantity) }}
+                    <input type="submit" value="Send"/>
                     {{ form_end(form) }}
                 </p>
             </div>

@@ -6,6 +6,8 @@ use App\Entity\Product;
 use Exception;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +51,7 @@ class DefaultController extends AbstractController
      * @param  int|null  $id
      * @return Response
      */
-    public function editProduct(Request $request, int $id = null): Response
+    public function editProduct(Request $request, int $id): Response
     {
         $product = $this
             ->getDoctrine()
@@ -58,11 +60,14 @@ class DefaultController extends AbstractController
             ->find($id);
 
         if ($product === null) {
-            throw new RuntimeException('Not Product');
+            throw new RuntimeException('Not Product to database');
         }
+
         $form = $this
             ->createFormBuilder($product)
             ->add('title', TextType::class)
+            ->add('price', NumberType::class)
+            ->add('quantity', IntegerType::class)
             ->getForm();
 
         $form->handleRequest($request);
@@ -86,16 +91,36 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/add_product",methods="POST", name="product_add")
+     * @Route("/add_product",methods="GET|POST", name="product_add")
      * @param  Request  $request
      * @return Response
      */
     public function addProduct(Request $request): Response
     {
-        $form = $this->createFormBuilder();
+        $product = new Product();
+        $form = $this
+            ->createFormBuilder($product)
+            ->add('title', TextType::class)
+            ->add('price', NumberType::class)
+            ->add('quantity', IntegerType::class)
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $form->getData();
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->persist($product);
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->flush();
 
-
-        return $this->render('main/default/edit_product.html.twig');
+            return $this->redirectToRoute('product_edit',['id' => $product->getId()]);
+        }
+        return $this->render('main/default/edit_product.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
 

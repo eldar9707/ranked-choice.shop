@@ -64,6 +64,7 @@ class Product
         $this->createdAt = new DateTimeImmutable();
         $this->isPublished = false;
         $this->isDelited = false;
+        $this->uuid = uniqid('', true);
     }
 
 
@@ -84,9 +85,9 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): float
     {
-        return $this->price;
+        return (float)$this->price;
     }
 
     public function setPrice(string $price): self
