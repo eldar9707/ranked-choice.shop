@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\EditProductFormType;
 use Exception;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,8 +33,7 @@ class DefaultController extends AbstractController
         $product->setTitle('Product-'.random_int(1, 100));
         $product->setDescription('Description '.$product->getTitle());
         $product->setPrice(10);
-        $product->setUuid(uniqid('', true));
-        $product->setQuantity(1);
+        $product->setQuantity(random_int(1, 10));
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($product);
@@ -63,12 +60,7 @@ class DefaultController extends AbstractController
             throw new RuntimeException('Not Product to database');
         }
 
-        $form = $this
-            ->createFormBuilder($product)
-            ->add('title', TextType::class)
-            ->add('price', NumberType::class)
-            ->add('quantity', IntegerType::class)
-            ->getForm();
+        $form = $this->createForm(EditProductFormType::class, $product);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -82,7 +74,9 @@ class DefaultController extends AbstractController
                 ->getManager()
                 ->flush();
 
-            return $this->redirectToRoute('product_edit',['id' => $product->getId()]);
+            return $this->redirectToRoute('product_edit',[
+                'id' => $product->getId()]
+            );
         }
 
         return $this->render('main/default/edit_product.html.twig', [
@@ -98,12 +92,7 @@ class DefaultController extends AbstractController
     public function addProduct(Request $request): Response
     {
         $product = new Product();
-        $form = $this
-            ->createFormBuilder($product)
-            ->add('title', TextType::class)
-            ->add('price', NumberType::class)
-            ->add('quantity', IntegerType::class)
-            ->getForm();
+        $form = $this->createForm(EditProductFormType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $form->getData();

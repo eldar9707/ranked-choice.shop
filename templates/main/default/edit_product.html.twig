@@ -14,7 +14,7 @@
                   <div class="form-control">
                       <i class="fa fa-calendar"></i>
                       {{ form_label(form.title) }}
-                      {{ form_widget(form.title) }}
+                    {{ form_widget(form.title) }}
 
                       <small>{{ form_help(form.title) }}</small>
                       <span class="form-error">
@@ -23,6 +23,10 @@
                   </div>
                 {{ form_row(form.price) }}
                 {{ form_row(form.quantity) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.isPublished) }}
+                {{ form_row(form.isDeleted) }}
+
                     <input type="submit" value="Send"/>
                     {{ form_end(form) }}
                 </p>

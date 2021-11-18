@@ -52,7 +52,7 @@ class Product
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isDelited;
+    private $isDeleted;
 
     /**
      * @ORM\Column(type="guid")
@@ -63,7 +63,7 @@ class Product
     {
         $this->createdAt = new DateTimeImmutable();
         $this->isPublished = false;
-        $this->isDelited = false;
+        $this->isDeleted = false;
         $this->uuid = uniqid('', true);
     }
 
@@ -85,9 +85,9 @@ class Product
         return $this;
     }
 
-    public function getPrice(): float
+    public function getPrice(): ?string
     {
-        return (float)$this->price;
+        return $this->price;
     }
 
     public function setPrice(string $price): self
@@ -145,14 +145,14 @@ class Product
         return $this;
     }
 
-    public function getIsDelited(): ?bool
+    public function getIsDeleted(): ?bool
     {
-        return $this->isDelited;
+        return $this->isDeleted;
     }
 
-    public function setIsDelited(bool $isDelited): self
+    public function setIsDeleted(bool $isDeleted = false): self
     {
-        $this->isDelited = $isDelited;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
