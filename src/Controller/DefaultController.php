@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="main_homepage")
      */
     public function index(): Response
     {
@@ -39,7 +39,7 @@ class DefaultController extends AbstractController
         $entityManager->persist($product);
         $entityManager->flush();
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('main_homepage');
     }
 
     /**
